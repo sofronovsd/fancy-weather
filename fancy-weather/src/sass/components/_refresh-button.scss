@@ -1,0 +1,21 @@
+.refresh-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  width: 44px;
+  height: 44px;
+  background: grey url("../../images/refresh.png");
+  border-radius: 5px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #b4b8bb;
+  }
+}
+
+.icon-refresh {
+  width: 20px;
+  height: 20px;
+  background: url("../../images/refresh-icon.svg") no-repeat center;
+}
