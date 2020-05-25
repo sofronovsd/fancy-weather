@@ -1,12 +1,24 @@
-.refresh-button {
+.button {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px;
   width: 44px;
   height: 44px;
-  background: grey url("../../images/refresh.png");
+  border: none;
   border-radius: 5px;
+  background: grey;
+
+  &_refresh {
+    background: grey url("../../images/refresh.png");
+  }
+
+  &_medium {
+    width: 60px;
+  }
+
+  &_wide {
+    width: 100px;
+  }
 
   &:hover {
     cursor: pointer;

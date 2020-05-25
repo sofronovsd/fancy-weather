@@ -1,6 +1,8 @@
 import React from 'react';
-import 'materialize-css'
+import {Col, Container, Row} from "react-bootstrap";
 import ControlPanel from "./components/ControlPanel";
+import SearchInput from "./components/SearchInput";
+import WeatherCard from "./components/WeatherCard";
 
 function App() {
     const [nextImg, setNextImg] = React.useState('');
@@ -17,7 +19,6 @@ function App() {
             .then(res => {
                 console.log(res);
                 setNextImg(res.urls.full);
-                // document.querySelector('body').style.backgroundImage = res.url;
             })
     };
 
@@ -27,12 +28,24 @@ function App() {
     };
 
   return (
-    <div className="row background" style={divStyle}>
-        <div className="col s6">
-            <ControlPanel handleRefresh={handleRefresh}/>
-        </div>
-        <div className="col s6"/>
-    </div>
+      <Container fluid style={divStyle}>
+          <Row>
+              <Col>
+                <ControlPanel handleRefresh={handleRefresh}/>
+              </Col>
+              <Col lg={4}>
+                <SearchInput/>
+              </Col>
+          </Row>
+          <Row>
+              <Col>
+                  <WeatherCard/>
+              </Col>
+              <Col lg={4}>
+
+              </Col>
+          </Row>
+      </Container>
   );
 }
 

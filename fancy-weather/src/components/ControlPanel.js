@@ -1,37 +1,44 @@
 import React from "react";
-import Select from "@material-ui/core/Select";
-import FormControl from '@material-ui/core/FormControl';
-import MenuItem from "@material-ui/core/MenuItem";
-import RefreshButton from "./RefreshButton";
-import Dropdown from "./Dropdown";
+import {Button, ButtonGroup, Dropdown, DropdownItem} from "react-bootstrap";
 
 export default function ControlPanel(props) {
-    const [language, setLanguage] = React.useState('en');
+    const options = [
+        "EN",
+        "RU",
+        "BE",
+    ];
+
+    const [language, setLanguage] = React.useState(options[0]);
 
     const handleChange = (event) => {
-        setLanguage(event.target.value);
+        console.log(event.target);
+        setLanguage(event.target.textContent);
     };
-
-    const options = [
-        "en",
-        "ru",
-        "be",
-    ];
 
     return (
         <div className="control-panel">
-            <RefreshButton onClick={props.handleRefresh} />
-            <Dropdown options={options}/>
-            {/*<FormControl variant="outlined">*/}
-            {/*    <Select*/}
-            {/*        value={language}*/}
-            {/*        onChange={handleChange}*/}
-            {/*    >*/}
-            {/*        <MenuItem value="en">EN</MenuItem>*/}
-            {/*        <MenuItem value="ru">RU</MenuItem>*/}
-            {/*        <MenuItem value="be">BE</MenuItem>*/}
-            {/*    </Select>*/}
-            {/*</FormControl>*/}
+            <Button
+                variant="secondary"
+                className="button button_refresh"
+                onClick={props.handleRefresh}
+            >
+                <div className="icon-refresh"/>
+            </Button>
+            <Dropdown>
+                <Dropdown.Toggle variant="secondary" className="button button_medium">
+                    {language}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu variant="secondary">
+                    { options.map((option, index) => {
+                        return <DropdownItem key={index} onClick={handleChange}>{option}</DropdownItem>
+                    }) }
+                </Dropdown.Menu>
+            </Dropdown>
+            <ButtonGroup>
+                <Button variant="secondary" className="button">&deg;C</Button>
+                <Button variant="secondary" className="button">&deg;F</Button>
+            </ButtonGroup>
         </div>
     );
 }
