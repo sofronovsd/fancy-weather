@@ -1,6 +1,37 @@
 .card {
-  font-family: Roboto, sans-serif;
+  font-family: Montserrat, sans-serif;
+  font-style: normal;
   color: white;
   background: none;
   border: none;
+
+  &__title {
+    font-weight: bold;
+    font-size: 44px;
+    line-height: 54px;
+    text-transform: uppercase;
+  }
+
+  &__date {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+  }
+
+  &__degree {
+    font-weight: bold;
+    font-size: 306px;
+    line-height: 373px;
+    text-transform: uppercase;
+  }
+
+  &__summary {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 37px;
+    text-transform: uppercase;
+  }
 }

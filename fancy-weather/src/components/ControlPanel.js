@@ -36,7 +36,7 @@ export default function ControlPanel(props) {
                 </Dropdown.Menu>
             </Dropdown>
             <ButtonGroup>
-                <Button variant="secondary" className="button">&deg;C</Button>
+                <Button variant="secondary" className="button button_active">&deg;C</Button>
                 <Button variant="secondary" className="button">&deg;F</Button>
             </ButtonGroup>
         </div>

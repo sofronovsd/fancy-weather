@@ -12,6 +12,10 @@
     background: grey url("../../images/refresh.png");
   }
 
+  &_active {
+    background: rgba(76, 82, 85, 0.4);
+  }
+
   &_medium {
     width: 60px;
   }

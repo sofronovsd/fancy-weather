@@ -1,0 +1,13 @@
+.text {
+  font-family: Montserrat, sans-serif;
+  font-style: normal;
+  color: #FFFFFF;
+
+  &__search {
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+}
