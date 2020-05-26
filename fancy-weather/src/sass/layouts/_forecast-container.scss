@@ -1,0 +1,13 @@
+.forecast-container {
+  display: flex;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    margin: 0 10px;
+    text-align: center;
+    border: grey solid 1px;
+    border-radius: 5px;
+  }
+}
