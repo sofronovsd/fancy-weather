@@ -19,9 +19,13 @@ export default function GeoMap({coords}) {
 
     return (
         <div className="map-container">
-            <YMaps query={{lang: 'en_US', apikey: 'a520bd1e-3cdd-4dba-b4c1-d916ea93a8a0'}}>
-                <Map style={{width: '100%', height: '300px'}} state={position}/>
-            </YMaps>
+            <div className="map-wrapper">
+                <YMaps query={{lang: 'en_US', apikey: 'a520bd1e-3cdd-4dba-b4c1-d916ea93a8a0'}}>
+                    <Map style={{width: '100%', height: '300px'}} state={position}/>
+                </YMaps>
+            </div>
+            <p className="text text__coords">Latitude: {`${Math.floor(position.center[0])}°${Math.floor(position.center[0] % 1 * 60)}\'`}</p>
+            <p className="text text__coords">Longitude: {`${Math.floor(position.center[1])}°${Math.floor(position.center[1] % 1 * 60)}\'`}</p>
         </div>
     )
 

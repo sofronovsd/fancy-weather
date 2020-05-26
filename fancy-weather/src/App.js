@@ -9,6 +9,7 @@ function App() {
     const [nextImg, setNextImg] = React.useState('');
     const [weather, setWeather] = React.useState({});
     const [coords, setCoords] = React.useState(null);
+    const [isC, setC] = React.useState(true);
 
     const handleRefresh = () => {
         fetch('https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature&client_id=IPAyLGzMmb97ehcIJPsqCpDAmIuZwoeUyRYL5uKWvHY',
@@ -23,17 +24,17 @@ function App() {
                 setNextImg(res.urls.full);
             });
 
-        requestPosition()
-            .then(geoPosition => {
-                const geoParams = geoPosition.loc.split(',');
-                setCoords(geoParams);
-                requestCurrentWeather(geoParams)
-                    .then(result => {
-                        Object.assign(result, {place: `${geoPosition.city}, ${geoPosition.country}`});
-                        console.log(result);
-                        setWeather(result);
-                    });
-            })
+        // requestPosition()
+        //     .then(geoPosition => {
+        //         const geoParams = geoPosition.loc.split(',');
+        //         setCoords(geoParams);
+        //         requestCurrentWeather(geoParams)
+        //             .then(result => {
+        //                 Object.assign(result, {place: `${geoPosition.state}, ${geoPosition.country}`});
+        //                 console.log(result);
+        //                 setWeather(result);
+        //             });
+        //     })
 
     };
 
@@ -65,7 +66,7 @@ function App() {
         requestGeoPosition(value)
             .then(res => {
                 const result = res.results[0];
-                const place = `${result.components.city}, ${result.components.country}`;
+                const place = `${result.components.state}, ${result.components.country}`;
                 const coords = [result.geometry.lat, result.geometry.lng];
                 requestCurrentWeather(coords)
                     .then(result => {
@@ -78,11 +79,15 @@ function App() {
             })
     };
 
+    const handleChangeC = (target) => {
+        target.getAttribute('data') === 'true' ? setC(true) : setC(false);
+    };
+
     return (
         <Container fluid style={divStyle}>
             <Row>
                 <Col>
-                    <ControlPanel handleRefresh={handleRefresh}/>
+                    <ControlPanel handleRefresh={handleRefresh} handleChangeC={handleChangeC}/>
                 </Col>
                 <Col lg={4}>
                     <SearchInput handleSearchClick={handleSearchClick}/>
@@ -90,7 +95,7 @@ function App() {
             </Row>
             <Row>
                 <Col>
-                    <WeatherCard data={weather}/>
+                    <WeatherCard data={weather} isC={isC}/>
                 </Col>
                 <Col lg={4}>
                     <GeoMap coords={coords}/>

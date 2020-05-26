@@ -20,15 +20,21 @@
 
   &__degree {
     font-weight: bold;
-    font-size: 306px;
-    line-height: 373px;
+    font-size: 14rem;
+    line-height: 16rem;
     text-transform: uppercase;
+
+    @media screen and (max-width: 500px){
+      font-size: 10rem;
+      line-height: 15rem;
+    }
   }
 
   &__summary {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: 0 10px;
     font-weight: bold;
     font-size: 22px;
     line-height: 37px;

@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, ButtonGroup, Dropdown, DropdownItem} from "react-bootstrap";
 
-export default function ControlPanel(props) {
+export default function ControlPanel({handleRefresh, handleChangeC}) {
     const options = [
         "EN",
         "RU",
@@ -10,9 +10,13 @@ export default function ControlPanel(props) {
 
     const [language, setLanguage] = React.useState(options[0]);
 
-    const handleChange = (event) => {
+    const handleChangeLanguage = (event) => {
         console.log(event.target);
         setLanguage(event.target.textContent);
+    };
+
+    const handleChangeTemp = (event) => {
+        handleChangeC(event.target);
     };
 
     return (
@@ -20,7 +24,7 @@ export default function ControlPanel(props) {
             <Button
                 variant="secondary"
                 className="button button_refresh"
-                onClick={props.handleRefresh}
+                onClick={handleRefresh}
             >
                 <div className="icon-refresh"/>
             </Button>
@@ -31,13 +35,23 @@ export default function ControlPanel(props) {
 
                 <Dropdown.Menu variant="secondary">
                     { options.map((option, index) => {
-                        return <DropdownItem key={index} onClick={handleChange}>{option}</DropdownItem>
+                        return <DropdownItem key={index} onClick={handleChangeLanguage}>{option}</DropdownItem>
                     }) }
                 </Dropdown.Menu>
             </Dropdown>
             <ButtonGroup>
-                <Button variant="secondary" className="button button_active">&deg;C</Button>
-                <Button variant="secondary" className="button">&deg;F</Button>
+                <Button
+                    variant="secondary"
+                    className="button button_active"
+                    onClick={handleChangeTemp}
+                    data="true"
+                >&deg;C</Button>
+                <Button
+                    variant="secondary"
+                    className="button"
+                    onClick={handleChangeTemp}
+                    data="false"
+                >&deg;F</Button>
             </ButtonGroup>
         </div>
     );

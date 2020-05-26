@@ -10,4 +10,12 @@
     text-align: center;
     text-transform: uppercase;
   }
+
+  &__coords {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: right;
+    text-transform: capitalize;
+  }
 }

@@ -2,7 +2,7 @@ import React from "react";
 import {Card} from "react-bootstrap";
 import Moment from "react-moment";
 
-export default function WeatherCard( { data } ) {
+export default function WeatherCard( { data, isC } ) {
     return (
         <Card>
             <Card.Body>
@@ -14,8 +14,11 @@ export default function WeatherCard( { data } ) {
                         format="dddd DD MMMM HH:mm:ss"
                     />
                 </p>
-                <div style={{display: 'flex'}}>
-                    <p className="card__degree">{data.temp && data.temp.value}&deg;</p>
+                <div className="flex-container">
+                    <p className="card__degree">
+                        {data.temp && (isC ? data.temp.value : Math.floor((data.temp.value * 9) / 5 + 32))}
+                        <sup>&deg;{isC ? `C` : `F`}</sup>
+                    </p>
                     <div className="card__summary">
                         <p>{data.weather_code && data.weather_code.value.replace('_', ' ')}</p>
                         <p>Feels like: {data.feels_like && data.feels_like.value}&deg;</p>
