@@ -3,20 +3,33 @@ import {Card} from "react-bootstrap";
 import Moment from "react-moment";
 import 'moment-timezone';
 import weatherMap from "../weatherMap";
+import * as moment from "moment";
 
 export default function WeatherCard( { data, isC } ) {
     const temp = data.temp && (isC ? Math.floor(data.temp.value)
         : Math.floor((data.temp.value * 9) / 5 + 32));
     const feelsLike = data.feels_like && (isC ? Math.floor(data.feels_like.value)
         : Math.floor((data.feels_like.value * 9) / 5 + 32));
-    console.log(weatherMap);
-    console.log(data.weather_code);
+
+    let iconSrc;
+    if (data.weather_code) {
+        const hours = +moment().tz(data.timezone).format('HH');
+        let value = data.weather_code.value;
+        if ((value === 'clear' || value === 'mostly_clear') && (hours >= 22 || hours <= 6)) {
+            iconSrc = weatherMap['clear_night'];
+        } else
+        if (value === 'partly_cloudy_day' && (hours >= 22 || hours <= 6)) {
+            iconSrc = weatherMap['partly_cloudy_night'];
+        } else {
+            iconSrc = weatherMap[data.weather_code.value];
+        }
+    }
     return (
         <Card>
             <Card.Body>
                 <img
                     className="icon icon_primary"
-                    src={data.weather_code && weatherMap[data.weather_code.value]}
+                    src={iconSrc}
                     alt="weather-icon"
                 />
                 <p className="card__title">{data.place}</p>

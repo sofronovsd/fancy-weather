@@ -6,6 +6,7 @@ import WeatherCard from "./components/WeatherCard";
 import GeoMap from "./components/GeoMap";
 import Moment from "react-moment";
 import Forecast from "./components/Forecast";
+import * as moment from "moment"
 
 function App() {
     const [nextImg, setNextImg] = React.useState('');
@@ -15,7 +16,11 @@ function App() {
     const [forecast, setForecast] = React.useState([]);
 
     const handleRefresh = () => {
-        fetch('https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature&client_id=IPAyLGzMmb97ehcIJPsqCpDAmIuZwoeUyRYL5uKWvHY',
+        const date = Number(moment().format('MM'));
+        const season = date > 2 ? date > 5 ? date > 8 ? date > 11 ? 'winter' : 'autumn' : 'summer' : 'spring' : 'winter';
+        const hours = moment().format('HH');
+        const hoursString = hours > 12 ? `${hours % 12}PM` :`${hours}AM`;
+        fetch(`https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature,${weather.weather_code && weather.weather_code.value},${season},${hoursString}&client_id=IPAyLGzMmb97ehcIJPsqCpDAmIuZwoeUyRYL5uKWvHY`,
             {
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8',
@@ -73,7 +78,6 @@ function App() {
         requestGeoPosition(value)
             .then(res => {
                 const result = res.results[0];
-                console.log(result);
                 const place = `${result.components.city? result.components.city : result.components.state}, ${result.components.country}`;
                 const timezone = result.annotations.timezone.name;
                 const coords = [result.geometry.lat, result.geometry.lng];
@@ -89,7 +93,6 @@ function App() {
                             .then(res => {
                                 const forecast = res.slice(1,4);
                                 setForecast(forecast);
-                                console.log(forecast);
                             })
                     });
             })

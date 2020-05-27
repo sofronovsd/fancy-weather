@@ -21,7 +21,9 @@ const weatherMap = {
     fog: '/images/weather-icons/mist.svg',
     mostly_cloudy: '/images/weather-icons/cloudy.svg',
     partly_cloudy: '/images/weather-icons/partly-cloudy-day.svg',
-    mostly_clear: '/images/weather-icons/clear-day.svg'
+    mostly_clear: '/images/weather-icons/clear-day.svg',
+    clear_night: '/images/weather-icons/clear-night.svg',
+    partly_cloudy_night: '/images/weather-icons/partly-cloudy-night.svg',
 };
 
 export default weatherMap;
