@@ -2,15 +2,23 @@ import React from "react";
 import {Card} from "react-bootstrap";
 import Moment from "react-moment";
 import 'moment-timezone';
+import weatherMap from "../weatherMap";
 
 export default function WeatherCard( { data, isC } ) {
     const temp = data.temp && (isC ? Math.floor(data.temp.value)
         : Math.floor((data.temp.value * 9) / 5 + 32));
     const feelsLike = data.feels_like && (isC ? Math.floor(data.feels_like.value)
         : Math.floor((data.feels_like.value * 9) / 5 + 32));
+    console.log(weatherMap);
+    console.log(data.weather_code);
     return (
         <Card>
             <Card.Body>
+                <img
+                    className="icon icon_primary"
+                    src={data.weather_code && weatherMap[data.weather_code.value]}
+                    alt="weather-icon"
+                />
                 <p className="card__title">{data.place}</p>
                 <p className="card__date">
                     <Moment

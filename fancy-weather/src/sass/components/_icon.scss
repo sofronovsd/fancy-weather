@@ -1,0 +1,17 @@
+.icon {
+  position: absolute;
+
+  &_primary {
+    top: 0;
+    right: 0;
+    width: 10rem;
+    height: 10rem;
+  }
+
+  &_secondary {
+    bottom: 0;
+    right: 0;
+    width: 5rem;
+    height: 5rem;
+  }
+}

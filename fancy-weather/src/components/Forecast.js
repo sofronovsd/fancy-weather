@@ -1,11 +1,17 @@
 import React from "react";
 import Moment from "react-moment";
+import weatherMap from "../weatherMap";
 
 export default function Forecast({forecast, isC}) {
     return (
         <div className="forecast-container">
             {forecast.map((day, index) => {
                 return <div className="forecast-container__item" key={index}>
+                    <img
+                        className="icon icon_secondary"
+                        src={day.weather_code && weatherMap[day.weather_code.value]}
+                        alt="weather-icon"
+                    />
                     <p className="text text__medium">
                         <Moment
                             date={day.observation_time.value}
@@ -16,7 +22,6 @@ export default function Forecast({forecast, isC}) {
                         {`${isC ? Math.floor((day.temp[0].min.value + day.temp[1].max.value) / 2) :
                             Math.floor((((day.temp[0].min.value + day.temp[1].max.value) / 2) * 9) / 5 + 32)}`}
                         <sup>&deg;{isC ? 'C' : 'F'}</sup>
-                        <span>{day.weather_code.value}</span>
                     </p>
                 </div>
             })}

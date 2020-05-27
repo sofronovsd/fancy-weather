@@ -5,6 +5,10 @@
   background: none;
   border: none;
 
+  &-body {
+    position: relative;
+  }
+
   &__title {
     font-weight: bold;
     font-size: 44px;
