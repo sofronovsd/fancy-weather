@@ -1,7 +1,8 @@
 import React from "react";
 import {Button, FormControl, InputGroup} from "react-bootstrap";
+import localesJson from "../utils/localesJson";
 
-export default function SearchInput({handleSearchClick}) {
+export default function SearchInput({language, handleSearchClick}) {
     const [value, setValue] = React.useState('');
 
     const handleChange = (event) => {
@@ -22,7 +23,7 @@ export default function SearchInput({handleSearchClick}) {
         <div className="search-container">
             <InputGroup>
                 <FormControl
-                    placeholder="Search city..."
+                    placeholder={localesJson[language.toUpperCase()]['searchPlaceholder']}
                     className="search-input"
                     value={value}
                     onChange={handleChange}
@@ -33,7 +34,7 @@ export default function SearchInput({handleSearchClick}) {
                         className="button button_wide text text__search"
                         variant="secondary"
                         onClick={handleClick}
-                    >Search</Button>
+                    >{localesJson[language.toUpperCase()]['search']}</Button>
                 </InputGroup.Append>
             </InputGroup>
         </div>

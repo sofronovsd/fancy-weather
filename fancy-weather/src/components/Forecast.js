@@ -1,8 +1,8 @@
 import React from "react";
 import Moment from "react-moment";
-import weatherMap from "../weatherMap";
+import weatherMap from "../utils/weatherMap";
 
-export default function Forecast({forecast, isC}) {
+export default function Forecast({language, forecast, isC}) {
     return (
         <div className="forecast-container">
             {forecast.map((day, index) => {
@@ -14,6 +14,7 @@ export default function Forecast({forecast, isC}) {
                     />
                     <p className="text text__medium">
                         <Moment
+                            locale={language}
                             date={day.observation_time.value}
                             format="dddd"
                         />

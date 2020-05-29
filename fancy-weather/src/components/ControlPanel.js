@@ -1,23 +1,23 @@
 import React from "react";
 import {Button, ButtonGroup, Dropdown, DropdownItem} from "react-bootstrap";
 
-export default function ControlPanel({handleRefresh, handleChangeC}) {
+export default function ControlPanel({language, isC, handleRefresh, handleChangeC, handleChangeLanguage}) {
     const options = [
         "EN",
         "RU",
         "BE",
     ];
 
-    const [language, setLanguage] = React.useState(options[0]);
-
-    const handleChangeLanguage = (event) => {
-        console.log(event.target);
-        setLanguage(event.target.textContent);
+    const handleLanguageSelect = (event) => {
+        handleChangeLanguage(event.target.textContent);
     };
 
     const handleChangeTemp = (event) => {
         handleChangeC(event.target);
     };
+
+    const buttonCClassName = `button ${isC  && 'active'}`;
+    const buttonFClassName = `button ${!isC && 'active'}`;
 
     return (
         <div className="control-panel">
@@ -35,20 +35,20 @@ export default function ControlPanel({handleRefresh, handleChangeC}) {
 
                 <Dropdown.Menu variant="secondary">
                     { options.map((option, index) => {
-                        return <DropdownItem key={index} onClick={handleChangeLanguage}>{option}</DropdownItem>
+                        return <DropdownItem key={index} onClick={handleLanguageSelect}>{option}</DropdownItem>
                     }) }
                 </Dropdown.Menu>
             </Dropdown>
             <ButtonGroup>
                 <Button
                     variant="secondary"
-                    className="button button_active"
+                    className={buttonCClassName}
                     onClick={handleChangeTemp}
                     data="true"
                 >&deg;C</Button>
                 <Button
                     variant="secondary"
-                    className="button"
+                    className={buttonFClassName}
                     onClick={handleChangeTemp}
                     data="false"
                 >&deg;F</Button>

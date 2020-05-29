@@ -4,32 +4,46 @@ import ControlPanel from "./components/ControlPanel";
 import SearchInput from "./components/SearchInput";
 import WeatherCard from "./components/WeatherCard";
 import GeoMap from "./components/GeoMap";
-import Moment from "react-moment";
 import Forecast from "./components/Forecast";
-import * as moment from "moment"
+import {requestCurrentWeather, requestDailyWeather} from "./api/WeatherApi";
+import {requestGeoPosition, requestIpInfo} from "./api/GeoPositionApi";
+import {requestRandomImage} from "./api/ImageApi";
 
 function App() {
     const [nextImg, setNextImg] = React.useState('');
     const [weather, setWeather] = React.useState({});
     const [coords, setCoords] = React.useState(null);
-    const [isC, setC] = React.useState(true);
     const [forecast, setForecast] = React.useState([]);
+    const [city, setCity] = React.useState('Samara');
+
+    const storedC = localStorage.getItem('isC');
+    const [isC, setC] = React.useState(storedC === 'true');
+
+    const handleChangeC = (target) => {
+        setC(target.getAttribute('data') === 'true');
+        localStorage.setItem('isC', target.getAttribute('data'));
+    };
+
+    const storedLanguage = localStorage.getItem('lang');
+    const [language, setLanguage] = React.useState(storedLanguage || 'EN');
+
+    const handleChangeLanguage = (value) => {
+        localStorage.setItem('lang', value);
+        setLanguage(value);
+        requestGeoPosition(city, value)
+            .then(res => {
+                const result = res.results[0];
+                const place = result.formatted;
+                // const place = `${result.components.city ? result.components.city : result.components.state}, ${result.components.country}`;
+                const newWeather = Object.assign({}, weather, {place: place});
+                setWeather(newWeather);
+            });
+    };
 
     const handleRefresh = () => {
-        const date = Number(moment().format('MM'));
-        const season = date > 2 ? date > 5 ? date > 8 ? date > 11 ? 'winter' : 'autumn' : 'summer' : 'spring' : 'winter';
-        const hours = moment().format('HH');
-        const hoursString = hours > 12 ? `${hours % 12}PM` :`${hours}AM`;
-        fetch(`https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature,${weather.weather_code && weather.weather_code.value},${season},${hoursString}&client_id=IPAyLGzMmb97ehcIJPsqCpDAmIuZwoeUyRYL5uKWvHY`,
-            {
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8',
-                    'SameSite': 'None'
-                }
-            })
-            .then(res => res.json())
+        requestRandomImage(weather)
             .then(res => {
-                setNextImg(res.urls.full);
+                setNextImg(res.urls.regular);
             });
 
         // requestPosition()
@@ -46,79 +60,87 @@ function App() {
 
     };
 
-    const requestDailyWeather = ( [latitude, longitude]) => {
-        return fetch(`https://api.climacell.co/v3/weather/forecast/daily?lat=${latitude}&lon=${longitude}&start_time=now&unit_system=si&fields=temp%2Cweather_code&apikey=5eLH5MVtbKUKu2JKcwXdLq37V0TgyXKJ`)
-            .then(res => res.json())
-    };
+    useEffect(() => {
+        requestIpInfo()
+            .then(result => {
+                const city = result.city;
+                setCity(city);
+                requestGeoPosition(city, language)
+                    .then(result => {
+                        console.log(result);
+                    })
+            })
+    }, []);
 
-    const requestCurrentWeather = ( [latitude, longitude]) => {
-        return fetch(`https://api.climacell.co/v3/weather/realtime?lat=${latitude}&lon=${longitude}unit_system=si&fields=temp%2Cwind_speed%2Chumidity%2Cfeels_like%2Cweather_code%2Ccloud_cover&apikey=5eLH5MVtbKUKu2JKcwXdLq37V0TgyXKJ`)
-            .then(res => res.json())
-    };
-
-    const requestPosition = () => {
-        return fetch(`https://ipinfo.io/json?token=0b1225981c188c`)
-            .then(res => res.json())
-    };
-
-    const requestGeoPosition = (place) => {
-        return fetch(`https://api.opencagedata.com/geocode/v1/json?q=${place}&key=4b03f4c134e542c8a16851109aa96bd4&pretty=1&language=en&limit=1`)
-            .then(res => res.json())
-    };
-
-    // useEffect(() => {
-    // }, []);
-
-    const divStyle = {
+    const dynamicBackgroundStyle = {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgb(0, 0, 0)), url(${nextImg})`,
         backgroundSize: `100% 100vh`
     };
 
     const handleSearchClick = (value) => {
-        requestGeoPosition(value)
+        setCity(value);
+        requestGeoPosition(value, language)
             .then(res => {
                 const result = res.results[0];
-                const place = `${result.components.city? result.components.city : result.components.state}, ${result.components.country}`;
+                console.log(result);
+                const place = result.formatted;
+                // const place = `${result.components.city ? result.components.city : result.components.state}, ${result.components.country}`;
                 const timezone = result.annotations.timezone.name;
                 const coords = [result.geometry.lat, result.geometry.lng];
+                setCoords(coords);
                 requestCurrentWeather(coords)
                     .then(result => {
                         Object.assign(result, {place: `${place}`, timezone: `${timezone}`});
-                        console.log(result);
                         setWeather(result);
-                        setCoords(coords)
                     })
-                    .then(() => {
+                    .then(() =>
                         requestDailyWeather(coords)
                             .then(res => {
-                                const forecast = res.slice(1,4);
+                                const forecast = res.slice(1, 4);
                                 setForecast(forecast);
                             })
-                    });
+                    );
             })
-    };
-
-    const handleChangeC = (target) => {
-        target.getAttribute('data') === 'true' ? setC(true) : setC(false);
+            .catch(err => console.log(err))
     };
 
     return (
-        <Container fluid style={divStyle}>
+        <Container fluid style={dynamicBackgroundStyle}>
             <Row>
                 <Col>
-                    <ControlPanel handleRefresh={handleRefresh} handleChangeC={handleChangeC}/>
+                    <ControlPanel
+                        language={language}
+                        isC={isC}
+                        handleRefresh={handleRefresh}
+                        handleChangeC={handleChangeC}
+                        handleChangeLanguage={handleChangeLanguage}
+                    />
                 </Col>
                 <Col lg={4}>
-                    <SearchInput handleSearchClick={handleSearchClick}/>
+                    <SearchInput
+                        language={language}
+                        handleSearchClick={handleSearchClick}
+                    />
                 </Col>
             </Row>
             <Row>
                 <Col>
-                    <WeatherCard data={weather} isC={isC}/>
-                    <Forecast forecast={forecast} isC={isC}/>
+                    <WeatherCard
+                        language={language}
+                        data={weather}
+                        isC={isC}
+                    />
+                    <Forecast
+                        language={language}
+                        forecast={forecast}
+                        isC={isC}
+                    />
                 </Col>
                 <Col lg={4}>
-                    <GeoMap coords={coords}/>
+                    <GeoMap
+                        language={language}
+                        coords={coords}
+                    />
                 </Col>
             </Row>
         </Container>

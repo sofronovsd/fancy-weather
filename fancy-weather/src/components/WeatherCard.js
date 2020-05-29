@@ -2,10 +2,11 @@ import React from "react";
 import {Card} from "react-bootstrap";
 import Moment from "react-moment";
 import 'moment-timezone';
-import weatherMap from "../weatherMap";
+import weatherMap from "../utils/weatherMap";
 import * as moment from "moment";
+import localesJson from "../utils/localesJson";
 
-export default function WeatherCard( { data, isC } ) {
+export default function WeatherCard( { language, data, isC } ) {
     const temp = data.temp && (isC ? Math.floor(data.temp.value)
         : Math.floor((data.temp.value * 9) / 5 + 32));
     const feelsLike = data.feels_like && (isC ? Math.floor(data.feels_like.value)
@@ -36,6 +37,7 @@ export default function WeatherCard( { data, isC } ) {
                 <p className="card__date">
                     <Moment
                         interval={1000}
+                        locale={language}
                         format="dddd DD MMMM HH:mm:ss"
                         tz={data.timezone}
                     />
@@ -46,10 +48,10 @@ export default function WeatherCard( { data, isC } ) {
                         <sup>&deg;{isC ? `C` : `F`}</sup>
                     </p>
                     <div className="card__summary text text__medium">
-                        <p>{data.weather_code && data.weather_code.value.replace('_', ' ')}</p>
-                        <p>Feels like: {feelsLike}<sup>&deg;{isC ? `C` : `F`}</sup></p>
-                        <p>Wind: {data.wind_speed && Math.floor(data.wind_speed.value)} m/s</p>
-                        <p>Humidity: {data.humidity && Math.floor(data.humidity.value)}%</p>
+                        <p>{data.weather_code && localesJson[language.toUpperCase()][data.weather_code.value]}</p>
+                        <p>{localesJson[language.toUpperCase()]['feelsLike']}: {feelsLike}<sup>&deg;{isC ? `C` : `F`}</sup></p>
+                        <p>{localesJson[language.toUpperCase()]['wind']}: {data.wind_speed && Math.floor(data.wind_speed.value)} m/s</p>
+                        <p>{localesJson[language.toUpperCase()]['humidity']}: {data.humidity && Math.floor(data.humidity.value)}%</p>
                     </div>
                 </div>
             </Card.Body>
