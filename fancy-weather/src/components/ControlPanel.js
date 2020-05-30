@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, ButtonGroup, Dropdown, DropdownItem} from "react-bootstrap";
 
-export default function ControlPanel({language, isC, handleRefresh, handleChangeC, handleChangeLanguage}) {
+export default function ControlPanel({language, isC, handleRefreshImage, handleChangeC, handleChangeLanguage}) {
     const options = [
         "EN",
         "RU",
@@ -24,7 +24,7 @@ export default function ControlPanel({language, isC, handleRefresh, handleChange
             <Button
                 variant="secondary"
                 className="button button_refresh"
-                onClick={handleRefresh}
+                onClick={handleRefreshImage}
             >
                 <div className="icon-refresh"/>
             </Button>
