@@ -59,11 +59,12 @@ function App() {
             value = weather;
         }
         return requestRandomImage(value)
+            .then(res => res.json())
+            .catch(() => showAlert('alertImage'))
             .then(res => {
-                setNextImg(res.urls.regular)
+                setNextImg(res.urls.regular);
                 closeAlert();
             })
-            .catch(() => showAlert("Limit of the image requests!"))
     };
 
     useEffect(() => {
@@ -86,17 +87,19 @@ function App() {
         return `${city}, ${country}`;
     };
 
-    const showAlert = (text) => {
+    const showAlert = (text, searchValue) => {
         const newAlert = {
             isShow: true,
             text: text
         };
+        if (searchValue) {
+            newAlert.searchValue = searchValue;
+        }
         setAlert(newAlert);
     };
 
-    const handleSearchClick = (value) => {
-        setCity(value);
-        return requestGeoPosition(value, language)
+    const handleSearchClick = (searchValue) => {
+        return requestGeoPosition(searchValue, language)
             .then(geoPositions => {
                 const geoPosition = geoPositions.results[0];
                 const place = composePlace(geoPosition);
@@ -104,6 +107,7 @@ function App() {
                 const coords = [geoPosition.geometry.lat, geoPosition.geometry.lng];
                 setCoords(coords);
                 requestCurrentWeather(coords)
+                    .then(res => res.json())
                     .then(currentWeather => {
                         const updatedCurrentWeather = Object.assign(currentWeather, {
                             place: `${place}`,
@@ -114,16 +118,20 @@ function App() {
                     })
                     .then((updatedCurrentWeather) =>
                         requestDailyWeather(coords)
+                            .then(res => res.json())
                             .then(res => {
                                 const forecast = res.slice(1, 4);
                                 setForecast(forecast);
                             })
-                            .then(() => handleRefreshImage(updatedCurrentWeather))
-                            .catch(() => showAlert("Limit of the weather requests!"))
+                            .then(() => {
+                                handleRefreshImage(updatedCurrentWeather).then(() =>
+                                    setCity(searchValue))
+                            })
+                            .catch(() => showAlert('alertWeather'))
                     )
-                    .catch(() => showAlert("Limit of the weather requests!"))
+                    .catch(() => showAlert('alertWeather'))
             })
-            .catch(() => showAlert(`Can't find this place: ${value}!`))
+            .catch(() => showAlert('alertPlace', searchValue))
     };
     return (
         <div>
@@ -160,6 +168,7 @@ function App() {
                                 <MyAlert
                                     alert={alert}
                                     closeAlert={closeAlert}
+                                    language={language}
                                 />
                             </Col>
                         </Row>

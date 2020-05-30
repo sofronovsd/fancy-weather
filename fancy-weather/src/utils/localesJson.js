@@ -31,6 +31,9 @@ const enLocale = {
     mostly_clear: "Mostly Clear",
     clear_night: "Clear",
     partly_cloudy_night: "Partly Cloudy",
+    alertImage: "Limit of the image requests!",
+    alertPlace: "Can't find this place: ",
+    alertWeather: "Limit of the weather requests!",
 };
 
 const ruLocale = {
@@ -66,6 +69,9 @@ const ruLocale = {
     mostly_clear: "Почти ясно",
     clear_night: "Ясно",
     partly_cloudy_night: "Частичная облачность",
+    alertImage: "Достигнут лимит запросов по изображению!",
+    alertPlace: "Не удаётся найти это место: ",
+    alertWeather: "Достигнут лимит запросов по погоде!",
 };
 
 const beLocale = {
@@ -101,6 +107,9 @@ const beLocale = {
     mostly_clear: "Амаль ясна",
     clear_night: "Ясна",
     partly_cloudy_night: "Частковая воблачнасць",
+    alertImage: "Дасягнуты ліміт запытаў па малюнку!",
+    alertPlace: "Немагчыма знайсці гэта месца: ",
+    alertWeather: "Дасягнуты ліміт запытаў па надвор'і!",
 };
 
 const localesJson = {

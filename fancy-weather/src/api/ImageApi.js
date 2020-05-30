@@ -13,5 +13,4 @@ export const requestRandomImage = (weather) => {
                 'SameSite': 'None'
             }
         })
-        .then(res => res.json())
 };
