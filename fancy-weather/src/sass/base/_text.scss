@@ -24,5 +24,10 @@
     font-size: 22px;
     line-height: 37px;
     text-transform: uppercase;
+
+    @media screen and (max-width: 500px){
+      font-size: 15px;
+      line-height: 20px;
+    }
   }
 }

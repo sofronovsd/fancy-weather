@@ -6,6 +6,12 @@
     right: 0;
     width: 10rem;
     height: 10rem;
+
+    @media screen and (max-width: 600px){
+      top: 6rem;
+      width: 8rem;
+      height: 8rem;
+    }
   }
 
   &_secondary {

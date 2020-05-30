@@ -5,9 +5,11 @@ export default function MyAlert({alert, closeAlert}) {
     return (
         <div>
             {alert.isShow ?
-                <Alert variant="danger" onClose={closeAlert} dismissible>
+                <div className="alert-container">
+                    <Alert variant="danger" onClose={closeAlert} dismissible>
                         {alert.text}
-                </Alert>
+                    </Alert>
+                </div>
                 : null}
         </div>
     );
