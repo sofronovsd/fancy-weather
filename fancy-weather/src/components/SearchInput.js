@@ -1,21 +1,72 @@
 import React from "react";
 import {Button, FormControl, InputGroup} from "react-bootstrap";
 import localesJson from "../utils/localesJson";
+import { useSpeechRecognition, useSpeechSynthesis } from "react-speech-kit";
 
-export default function SearchInput({language, handleSearchClick}) {
+export default function SearchInput({language, handleSearchClick, forecastSpeech}) {
     const [value, setValue] = React.useState('');
+    const [recording, setRecording] = React.useState(false);
+    const { listen, listening, stop } = useSpeechRecognition({
+      onResult: result => {
+        console.log(result);
+        setValue(result);
+      }
+    });
+    const { speak, cancel, speaking } = useSpeechSynthesis();
 
     const handleChange = (event) => {
         setValue(event.target.value);
     };
 
-    const handleClick = () => {
+    const handleSClick = () => {
         handleSearchClick(value);
+    };
+
+    const micClassName = `icon-mic ${recording ? 'icon-mic_active' : ''}`;
+    const playClassName = `icon-play ${speaking ? 'icon-play_active' : ''}`;
+
+    const handleMicClick = () => {
+      if (recording) {
+        stop();
+        const compareValue = value.trim().toLowerCase();
+        switch (compareValue) {
+          case 'погода': {
+            handlePlayClick();
+            break;
+          }
+          case 'прогноз': {
+            handlePlayClick();
+            break;
+          }
+          case 'weather': {
+            handlePlayClick();
+            break;
+          }
+          case 'forecast': {
+            handlePlayClick();
+            break;
+          }
+          default: {
+            handleSClick();
+          }
+        }
+      } else {
+        listen();
+      }
+      setRecording(!recording)
+    };
+
+    const handlePlayClick = () => {
+      if (!speaking) {
+        speak(forecastSpeech)
+      } else {
+        cancel();
+      }
     };
 
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-            handleClick()
+            handleSClick()
         }
     };
 
@@ -31,9 +82,23 @@ export default function SearchInput({language, handleSearchClick}) {
                 />
                 <InputGroup.Append>
                     <Button
+                      className="button"
+                      variant="secondary"
+                      onClick={handleMicClick}
+                    >
+                      <div className={micClassName}/>
+                    </Button>
+                    <Button
+                      className="button"
+                      variant="secondary"
+                      onClick={handlePlayClick}
+                    >
+                      <div className={playClassName}/>
+                    </Button>
+                    <Button
                         className="button button_wide text text__search"
                         variant="secondary"
-                        onClick={handleClick}
+                        onClick={handleSClick}
                     >{localesJson[language.toUpperCase()]['search']}</Button>
                 </InputGroup.Append>
             </InputGroup>

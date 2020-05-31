@@ -12,6 +12,10 @@
     background: grey url("/images/refresh.png");
   }
 
+  &_mic {
+    background: grey url("/images/mic.svg");
+  }
+
   &_active {
     background: rgba(76, 82, 85, 0.4);
   }

@@ -1,0 +1,9 @@
+.icon-mic {
+  width: 20px;
+  height: 20px;
+  background: url("/images/mic.svg") no-repeat center;
+
+  &_active {
+    background: url("/images/mic-off.svg") no-repeat center;
+  }
+}

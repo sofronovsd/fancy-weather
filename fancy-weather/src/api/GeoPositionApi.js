@@ -1,9 +1,9 @@
 export const requestGeoPosition = (place, language) => {
-    return fetch(`https://api.opencagedata.com/geocode/v1/json?q=${place}&key=4b03f4c134e542c8a16851109aa96bd4&pretty=1&language=${language.toLowerCase()}&limit=1`)
+    return fetch(`https://api.opencagedata.com/geocode/v1/json?q=${place}&key=${process.env.REACT_APP_GEO_KEY}&pretty=1&language=${language.toLowerCase()}&limit=1`)
         .then(res => res.json())
 };
 
 export const requestIpInfo = () => {
-    return fetch(`https://ipinfo.io/json?token=0b1225981c188c`)
+    return fetch(`https://ipinfo.io/json?token=${process.env.REACT_APP_IP_TOKEN}`)
         .then(res => res.json())
 };

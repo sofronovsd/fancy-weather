@@ -9,12 +9,26 @@ import {requestCurrentWeather, requestDailyWeather} from "./api/WeatherApi";
 import {requestGeoPosition, requestIpInfo} from "./api/GeoPositionApi";
 import {requestRandomImage} from "./api/ImageApi";
 import MyAlert from "./components/MyAlert";
+import localesJson from "./utils/localesJson";
+import * as moment from "moment";
 
 function App() {
     const [nextImg, setNextImg] = React.useState('');
-    const [weather, setWeather] = React.useState({});
-    const [coords, setCoords] = React.useState(null);
+    const [weather, setWeather] = React.useState({
+      cloud_cover: {value: 0, units: "%"},
+      feels_like: {value: 23, units: "C"},
+      humidity: {value: 52, units: "%"},
+      lat: 53.198627,
+      lon: 50.113987,
+      observation_time: {value: "2020-05-31T13:59:05.381Z"},
+      place: "Samara, Russia",
+      temp: {value: 23, units: "C"},
+      timezone: "Europe/Samara",
+      weather_code: {value: "clear"},
+      wind_speed: {value: 7, units: "m/s"}});
+    const [coords, setCoords] = React.useState([53.198627,50.113987]);
     const [forecast, setForecast] = React.useState([]);
+    const [forecastSpeech, setForecastSpeech] = React.useState({text: ''});
     const [city, setCity] = React.useState('Samara');
     const [loading, setLoading] = React.useState(true);
 
@@ -51,6 +65,7 @@ function App() {
                 const place = composePlace(geoPosition);
                 const newWeather = Object.assign({}, weather, {place: place});
                 setWeather(newWeather);
+                console.log('newWeather', newWeather)
             });
     };
 
@@ -122,6 +137,11 @@ function App() {
                             .then(res => {
                                 const forecast = res.slice(1, 4);
                                 setForecast(forecast);
+                                let speech = 'Прогноз погоды. ';
+                                forecast.forEach(day => speech += `День недели: ${moment(day.observation_time.value).locale('ru').format('dddd')}.
+                                Погода: ${localesJson[language][day.weather_code.value]}.
+                                Средняя температура: ${Math.floor((day.temp[0].min.value + day.temp[1].max.value)/2)} градусов Цельсия . `);
+                                setForecastSpeech({text: speech});
                             })
                             .then(() => {
                                 handleRefreshImage(updatedCurrentWeather).then(() =>
@@ -160,6 +180,7 @@ function App() {
                                 <SearchInput
                                     language={language}
                                     handleSearchClick={handleSearchClick}
+                                    forecastSpeech={forecastSpeech}
                                 />
                             </Col>
                         </Row>
