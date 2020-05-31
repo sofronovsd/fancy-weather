@@ -6,9 +6,8 @@ import { useSpeechRecognition, useSpeechSynthesis } from "react-speech-kit";
 export default function SearchInput({language, handleSearchClick, forecastSpeech}) {
     const [value, setValue] = React.useState('');
     const [recording, setRecording] = React.useState(false);
-    const { listen, listening, stop } = useSpeechRecognition({
+    const { listen, stop } = useSpeechRecognition({
       onResult: result => {
-        console.log(result);
         setValue(result);
       }
     });

@@ -65,7 +65,6 @@ function App() {
                 const place = composePlace(geoPosition);
                 const newWeather = Object.assign({}, weather, {place: place});
                 setWeather(newWeather);
-                console.log('newWeather', newWeather)
             });
     };
 
