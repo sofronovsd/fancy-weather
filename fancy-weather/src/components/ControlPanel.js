@@ -22,13 +22,14 @@ export default function ControlPanel({language, isC, handleRefreshImage, handleC
     return (
         <div className="control-panel">
             <Button
+                data-testid="button"
                 variant="secondary"
                 className="button button_refresh"
                 onClick={handleRefreshImage}
             >
                 <div className="icon-refresh"/>
             </Button>
-            <Dropdown>
+            <Dropdown data-testid="dropdown">
                 <Dropdown.Toggle variant="secondary" className="button button_medium">
                     {language}
                 </Dropdown.Toggle>
@@ -39,14 +40,16 @@ export default function ControlPanel({language, isC, handleRefreshImage, handleC
                     }) }
                 </Dropdown.Menu>
             </Dropdown>
-            <ButtonGroup>
+            <ButtonGroup data-testid="optionButtons">
                 <Button
+                    data-testid="cButton"
                     variant="secondary"
                     className={buttonCClassName}
                     onClick={handleChangeTemp}
                     data="true"
                 >&deg;C</Button>
                 <Button
+                    data-testid="fButton"
                     variant="secondary"
                     className={buttonFClassName}
                     onClick={handleChangeTemp}

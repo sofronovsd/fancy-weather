@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test control panel functionality control panel matches snapshot 1`] = `
+<div
+  className="control-panel"
+>
+  <button
+    className="button button_refresh btn btn-secondary"
+    data-testid="button"
+    disabled={false}
+    type="button"
+  >
+    <div
+      className="icon-refresh"
+    />
+  </button>
+  <div
+    className="dropdown"
+    data-testid="dropdown"
+    onKeyDown={[Function]}
+  >
+    <button
+      aria-expanded={false}
+      aria-haspopup={true}
+      className="button button_medium dropdown-toggle btn btn-secondary"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    />
+  </div>
+  <div
+    className="btn-group"
+    data-testid="optionButtons"
+    role="group"
+  >
+    <button
+      className="button undefined btn btn-secondary"
+      data="true"
+      data-testid="cButton"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      °C
+    </button>
+    <button
+      className="button active btn btn-secondary"
+      data="false"
+      data-testid="fButton"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      °F
+    </button>
+  </div>
+</div>
+`;

@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test forecast functionality forecast matches snapshot 1`] = `
+<div
+  className="forecast-container"
+  data-testid="forecastContainer"
+>
+  <div
+    className="forecast-container__item"
+    data-testid="forecastItem0"
+  >
+    <img
+      alt="weather-icon"
+      className="icon icon_secondary"
+    />
+    <p
+      className="text text__medium"
+    >
+      <time
+        dateTime={"1970-01-01T00:00:00.010Z"}
+      >
+        Thursday
+      </time>
+    </p>
+    <p
+      className="text"
+    >
+      50
+      <sup>
+        °
+        F
+      </sup>
+    </p>
+  </div>
+</div>
+`;

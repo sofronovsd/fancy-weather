@@ -11,7 +11,7 @@ export default function MyAlert({alert, closeAlert, language}) {
         <div>
             {alert.isShow ?
                 <div className="alert-container">
-                    <Alert variant="danger" onClose={closeAlert} dismissible>
+                    <Alert data-testid="alert" variant="danger" onClose={closeAlert} dismissible>
                         {message}
                     </Alert>
                 </div>

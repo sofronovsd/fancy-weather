@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test alert functionality alert matches snapshot 1 1`] = `
+<div>
+  <div
+    className="alert-container"
+  >
+    <div
+      className="fade alert alert-danger alert-dismissible show"
+      data-testid="alert"
+      role="alert"
+    >
+      <button
+        className="close"
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ×
+        </span>
+        <span
+          className="sr-only"
+        >
+          Close alert
+        </span>
+      </button>
+      Can't find this place: City
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Test alert functionality alert matches snapshot 2 1`] = `
+<div>
+  <div
+    className="alert-container"
+  >
+    <div
+      className="fade alert alert-danger alert-dismissible show"
+      data-testid="alert"
+      role="alert"
+    >
+      <button
+        className="close"
+        onClick={[Function]}
+        type="button"
+      >
+        <span
+          aria-hidden="true"
+        >
+          ×
+        </span>
+        <span
+          className="sr-only"
+        >
+          Close alert
+        </span>
+      </button>
+      Не удаётся найти это место: Город
+    </div>
+  </div>
+</div>
+`;

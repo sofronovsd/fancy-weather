@@ -4,9 +4,9 @@ import weatherMap from "../utils/weatherMap";
 
 export default function Forecast({language, forecast, isC}) {
     return (
-        <div className="forecast-container">
+        <div data-testid="forecastContainer" className="forecast-container">
             {forecast.map((day, index) => {
-                return <div className="forecast-container__item" key={index}>
+                return <div data-testid={`forecastItem${index}`} className="forecast-container__item" key={index}>
                     <img
                         className="icon icon_secondary"
                         src={day.weather_code && weatherMap[day.weather_code.value]}
