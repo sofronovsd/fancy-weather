@@ -1,8 +1,16 @@
 import React from "react";
 import Moment from "react-moment";
 import weatherMap from "../utils/weatherMap";
+import {getCorrectDegree} from "../utils/helper";
 
 export default function Forecast({language, forecast, isC}) {
+    const getAverageTemp = (day) => {
+      const minValue = day.temp[0].min.value;
+      const maxValue = day.temp[1].max.value;
+      const average = Math.floor((minValue + maxValue) / 2);
+      return isC ? average : Math.floor((average * 9) / 5 + 32);
+    };
+
     return (
         <div data-testid="forecastContainer" className="forecast-container">
             {forecast.map((day, index) => {
@@ -20,9 +28,8 @@ export default function Forecast({language, forecast, isC}) {
                         />
                     </p>
                     <p className="text">
-                        {`${isC ? Math.floor((day.temp[0].min.value + day.temp[1].max.value) / 2) :
-                            Math.floor((((day.temp[0].min.value + day.temp[1].max.value) / 2) * 9) / 5 + 32)}`}
-                        <sup>&deg;{isC ? 'C' : 'F'}</sup>
+                        {getAverageTemp(day)}
+                        <sup>{getCorrectDegree(isC)}</sup>
                     </p>
                 </div>
             })}

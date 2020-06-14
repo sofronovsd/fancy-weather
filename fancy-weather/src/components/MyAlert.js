@@ -8,14 +8,12 @@ export default function MyAlert({alert, closeAlert, language}) {
         message += alert.searchValue;
     }
     return (
-        <div>
-            {alert.isShow ?
+        alert.isShow ?
                 <div className="alert-container">
                     <Alert data-testid="alert" variant="danger" onClose={closeAlert} dismissible>
                         {message}
                     </Alert>
                 </div>
-                : null}
-        </div>
+                : null
     );
 }

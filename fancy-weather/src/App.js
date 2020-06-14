@@ -13,48 +13,36 @@ import localesJson from "./utils/localesJson";
 import * as moment from "moment";
 
 function App() {
+    const setupAlert = {
+      isShow: false,
+      text: "test Text"
+    };
+    const storedC = localStorage.getItem('isC');
+    const storedLanguage = localStorage.getItem('lang');
+
     const [nextImg, setNextImg] = React.useState('');
-    const [weather, setWeather] = React.useState({
-      cloud_cover: {value: 0, units: "%"},
-      feels_like: {value: 23, units: "C"},
-      humidity: {value: 52, units: "%"},
-      lat: 53.198627,
-      lon: 50.113987,
-      observation_time: {value: "2020-05-31T13:59:05.381Z"},
-      place: "Samara, Russia",
-      temp: {value: 23, units: "C"},
-      timezone: "Europe/Samara",
-      weather_code: {value: "clear"},
-      wind_speed: {value: 7, units: "m/s"}});
-    const [coords, setCoords] = React.useState([53.198627,50.113987]);
+    const [weather, setWeather] = React.useState({});
+    const [position, setPosition] = React.useState({});
     const [forecast, setForecast] = React.useState([]);
     const [forecastSpeech, setForecastSpeech] = React.useState({text: ''});
-    const [city, setCity] = React.useState('Samara');
+    const [city, setCity] = React.useState();
     const [loading, setLoading] = React.useState(true);
-
-    const setupAlert = {
-        isShow: false,
-        text: "test Text"
-    };
     const [alert, setAlert] = React.useState(setupAlert);
-    const closeAlert = () => {
-        const newAlert = {
-            isShow: false,
-            text: ''
-        };
-        setAlert(newAlert);
-    };
-
-    const storedC = localStorage.getItem('isC');
     const [isC, setC] = React.useState(storedC ? storedC === 'true' : true);
+    const [language, setLanguage] = React.useState(storedLanguage || 'EN');
+
+    const closeAlert = () => {
+      const newAlert = {
+        isShow: false,
+        text: ''
+      };
+      setAlert(newAlert);
+    };
 
     const handleChangeC = (target) => {
-        setC(target.getAttribute('data') === 'true');
-        localStorage.setItem('isC', target.getAttribute('data'));
+      setC(target.getAttribute('data') === 'true');
+      localStorage.setItem('isC', target.getAttribute('data'));
     };
-
-    const storedLanguage = localStorage.getItem('lang');
-    const [language, setLanguage] = React.useState(storedLanguage || 'EN');
 
     const handleChangeLanguage = (value) => {
         localStorage.setItem('lang', value);
@@ -80,15 +68,6 @@ function App() {
                 closeAlert();
             })
     };
-
-    useEffect(() => {
-        requestIpInfo()
-            .then(result => {
-                const city = result.city;
-                handleSearchClick(city)
-                    .then(() => setLoading(false))
-            })
-    }, []);
 
     const dynamicBackgroundStyle = {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgb(0, 0, 0)), url(${nextImg})`,
@@ -119,7 +98,13 @@ function App() {
                 const place = composePlace(geoPosition);
                 const timezone = geoPosition.annotations.timezone.name;
                 const coords = [geoPosition.geometry.lat, geoPosition.geometry.lng];
-                setCoords(coords);
+                setPosition({
+                  center: [
+                    coords[0],
+                    coords[1]
+                  ],
+                  zoom: 10
+                });
                 requestCurrentWeather(coords)
                     .then(res => res.json())
                     .then(currentWeather => {
@@ -152,9 +137,18 @@ function App() {
             })
             .catch(() => showAlert('alertPlace', searchValue))
     };
+
+    useEffect(() => {
+      requestIpInfo()
+        .then(result => {
+          const city = result.city;
+          handleSearchClick(city)
+            .then(() => setLoading(false))
+        })
+    }, []);
+
     return (
-        <div>
-            {loading ?
+        loading ?
                 <div className="spinner-container">
                     <Spinner
                         animation="border"
@@ -208,15 +202,12 @@ function App() {
                             <Col lg={4}>
                                 <GeoMap
                                     language={language}
-                                    coords={coords}
+                                    position={position}
                                 />
                             </Col>
                         </Row>
                     </div>
                 </Container>
-
-            }
-        </div>
     );
 }
 

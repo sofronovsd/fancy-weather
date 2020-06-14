@@ -1,12 +1,8 @@
 import React from "react";
 import {Button, ButtonGroup, Dropdown, DropdownItem} from "react-bootstrap";
+import LANGUAGE_OPTIONS from "../utils/languageOptions";
 
 export default function ControlPanel({language, isC, handleRefreshImage, handleChangeC, handleChangeLanguage}) {
-    const options = [
-        "EN",
-        "RU",
-        "BE",
-    ];
 
     const handleLanguageSelect = (event) => {
         handleChangeLanguage(event.target.textContent);
@@ -16,8 +12,8 @@ export default function ControlPanel({language, isC, handleRefreshImage, handleC
         handleChangeC(event.target);
     };
 
-    const buttonCClassName = `button ${isC  && 'active'}`;
-    const buttonFClassName = `button ${!isC && 'active'}`;
+    const buttonCClassName = 'button' + (isC ? ' active' : '');
+    const buttonFClassName = 'button' + (isC ? '' : ' active');
 
     return (
         <div className="control-panel">
@@ -35,7 +31,7 @@ export default function ControlPanel({language, isC, handleRefreshImage, handleC
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu variant="secondary">
-                    { options.map((option, index) => {
+                    { LANGUAGE_OPTIONS.map((option, index) => {
                         return <DropdownItem key={index} onClick={handleLanguageSelect}>{option}</DropdownItem>
                     }) }
                 </Dropdown.Menu>

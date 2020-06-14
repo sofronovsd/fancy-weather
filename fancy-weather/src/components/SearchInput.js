@@ -21,9 +21,6 @@ export default function SearchInput({language, handleSearchClick, forecastSpeech
         handleSearchClick(value);
     };
 
-    const micClassName = `icon-mic ${recording ? 'icon-mic_active' : ''}`;
-    const playClassName = `icon-play ${speaking ? 'icon-play_active' : ''}`;
-
     const handleMicClick = () => {
       if (recording) {
         stop();
@@ -69,11 +66,14 @@ export default function SearchInput({language, handleSearchClick, forecastSpeech
         }
     };
 
+    const micClassName = `icon-mic ${recording ? 'icon-mic_active' : ''}`;
+    const playClassName = `icon-play ${speaking ? 'icon-play_active' : ''}`;
+
     return (
         <div className="search-container">
             <InputGroup>
                 <FormControl
-                    placeholder={localesJson[language.toUpperCase()]['searchPlaceholder']}
+                    placeholder={localesJson[language.toUpperCase()].searchPlaceholder}
                     className="search-input"
                     value={value}
                     onChange={handleChange}
@@ -98,7 +98,7 @@ export default function SearchInput({language, handleSearchClick, forecastSpeech
                         className="button button_wide text text__search"
                         variant="secondary"
                         onClick={handleSClick}
-                    >{localesJson[language.toUpperCase()]['search']}</Button>
+                    >{localesJson[language.toUpperCase()].search}</Button>
                 </InputGroup.Append>
             </InputGroup>
         </div>
